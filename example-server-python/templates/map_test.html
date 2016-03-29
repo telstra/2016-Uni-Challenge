@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Telstra M2M Challenge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+    <link href="static/css/site.css" rel="stylesheet">
+    <link href="static/css/bootstrap-responsive.css" rel="stylesheet">
+    <script type="text/javascript" src="static/js/jquery.js"></script>
+	<script type='text/javascript' src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKk9SBIqz3HqHslD_VwWPagJVXW2PGpCE&sensor=true"> </script>
+	<script type="text/javascript" src="static/js/markerclusterer.js"></script>	
+	<script type="text/javascript" src="static/js/es5-shim.min.js"></script>
+    <script src="static/js/bootstrap-transition.js"></script>
+    <script src="static/js/bootstrap-alert.js"></script>
+    <script src="static/js/bootstrap-modal.js"></script>
+    <script src="static/js/bootstrap-dropdown.js"></script>
+    <script src="static/js/bootstrap-scrollspy.js"></script>
+    <script src="static/js/bootstrap-tab.js"></script>
+    <script src="static/js/bootstrap-tooltip.js"></script>
+    <script src="static/js/bootstrap-popover.js"></script>
+    <script src="static/js/bootstrap-button.js"></script>
+    <script src="static/js/bootstrap-collapse.js"></script>
+    <script src="static/js/bootstrap-carousel.js"></script>
+    <script src="static/js/bootstrap-typeahead.js"></script>
+	
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]> <script src="static/js/html5shiv.js"></script> <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="static/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="static/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="static/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="static/ico/favicon.ico">
+
+
+
+ <script type="text/javascript">
+var teamArray = [];
+var markersArray = [];
+var markerCluster = null;
+var count = 0;
+var map; 
+var uniInfo = getUniInfo();
+
+var a_url = 'http://maps.google.com/mapfiles/markerA.png';
+var b_url = 'http://maps.google.com/mapfiles/marker_yellowB.png';
+var c_url = 'http://maps.google.com/mapfiles/marker_greenC.png';
+var d_url = 'http://maps.google.com/mapfiles/marker_purpleD.png';
+var e_url = 'http://maps.google.com/mapfiles/marker_orangeE.png';
+var f_url = 'http://maps.google.com/mapfiles/marker_whiteF.png';
+var g_url = 'http://maps.google.com/mapfiles/marker_blackG.png';
+var h_url = 'http://maps.google.com/mapfiles/marker_greyH.png';
+var i_url = 'http://maps.google.com/mapfiles/marker_brownI.png';
+var j_url = 'http://maps.google.com/mapfiles/markerJ.png';
+
+var k_url = 'http://maps.google.com/mapfiles/markerK.png';
+var l_url = 'http://maps.google.com/mapfiles/marker_yellowL.png';
+var m_url = 'http://maps.google.com/mapfiles/marker_greenM.png';
+var n_url = 'http://maps.google.com/mapfiles/marker_purpleN.png';
+var o_url = 'http://maps.google.com/mapfiles/marker_orangeO.png';
+var p_url = 'http://maps.google.com/mapfiles/marker_whiteP.png';
+var q_url = 'http://maps.google.com/mapfiles/marker_blackQ.png';
+var r_url = 'http://maps.google.com/mapfiles/marker_greyR.png';
+var s_url = 'http://maps.google.com/mapfiles/marker_brownS.png';
+var t_url = 'http://maps.google.com/mapfiles/markerT.png';
+
+var u_url = 'http://maps.google.com/mapfiles/markerU.png';
+var v_url = 'http://maps.google.com/mapfiles/marker_yellowV.png';
+var w_url = 'http://maps.google.com/mapfiles/marker_greenW.png';
+var x_url = 'http://maps.google.com/mapfiles/marker_purpleX.png';
+var y_url = 'http://maps.google.com/mapfiles/marker_orangeY.png';
+var z_url = 'http://maps.google.com/mapfiles/marker_whiteZ.png';
+
+
+var customIconUrl = [a_url, b_url, c_url, d_url, e_url, f_url, g_url, h_url, i_url, j_url, k_url, l_url,
+ m_url, n_url, o_url, p_url, q_url, r_url, s_url, t_url, u_url, v_url, w_url, x_url, y_url, z_url]
+
+
+function jsonpCallback(data){
+				teamArray= jQuery.parseJSON(data);
+
+                trimRecords();
+				addLegend(map);             
+                addMarker(); 
+			}
+
+
+function initialize() {
+	var Australia = new google.maps.LatLng(-28,135); //Centre of Australia
+	var mapOptions = {
+		zoom: 4,
+		center: Australia,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	map = new google.maps.Map(document.getElementById('map'), mapOptions);
+	$.ajax({
+		type: "GET",
+		//url: "http://example.innovation.telstra.com/api/position",
+		url: "http://58.162.145.208/api/position",
+		async: false,
+     	jsonpCallback: 'jsonCallback',
+		contentType: "application/json",
+		dataType: "text",
+        success: jsonpCallback
+	});							
+}
+
+
+
+// Trim the list of records so that there is only one record per CPU id.
+// This prevents the map being flooded by many posts from the same device, resulting 
+// map displays only the most recent location post by each team.
+function trimRecords() {
+                console.log(teamArray)
+                var trimmedArray = [];
+                var replacer = null;
+                
+                if (trimmedArray.length < 1 ) {trimmedArray.push(teamArray[0]);} 
+                
+                for (var i = 0; i < teamArray.length; i++) {                         
+                                
+                                for (var j = 0; j < trimmedArray.length; j++) {
+                                
+                                            if ((teamArray[i].device_ID ==  trimmedArray[j].device_ID) ){
+                                                           replacer = null;
+                                                           break;
+                                            }                                            
+                                            else {                                                     
+                                                            replacer = teamArray[i];                                                            
+                                            }
+                                }
+                     if (replacer != null ) {trimmedArray.push(replacer);} 
+                }
+                // trimmed array is reversed to preserve order of markers
+                teamArray = trimmedArray.reverse();
+}
+
+
+
+function addMarker() { 
+		var teamIndex = 0;     
+        var teamUniInfo = [];
+		teamArray.forEach( function (teamObject) {
+        
+        try{
+							// Create marker onClick() info 
+                                teamUniInfo = matchCode(teamObject.team_code);
+								var teamInfo = new google.maps.InfoWindow({content: '<h3>'+ teamUniInfo.teamName + '</h3>' + 
+																					'<br><p> team code: ' + teamObject.team_code + ' ,<br> ' + 
+																					'device reading: ' + teamObject.device_reading + '</p>' + 
+																					'<br>' //+
+																					//'<br><p> IMEI:' + teamObject.imei + '</p>' + 
+																					//'<br><p> IMSI:' + teamObject.imsi + '</p>' + 
+																					//'<br><p> Raspberry Pi Identifier:' + teamObject.cpuID + '</p>' 
+																					}  
+																					);
+								var teamMarker = new google.maps.Marker( {
+										  position: new google.maps.LatLng(teamUniInfo.lat, teamUniInfo.lon),    
+										  map: map,
+										  title: 'Team ' + teamIndex,
+										  icon: new google.maps.MarkerImage(customIconUrl[teamIndex])
+										  });
+                                          teamMarker.setAnimation(google.maps.Animation.DROP);
+								markersArray.push(teamMarker);                               
+								google.maps.event.addListener(teamMarker, 'click', function() {
+										  teamInfo.open(map,teamMarker);
+										  });
+								teamIndex++; 
+						
+        } catch (err) {
+            if (err.name === 'TypeError')
+                {console.log('unexpected Team code')}
+        } 
+
+
+
+                        }) 
+                            
+                   
+                            
+                            
+		
+		markerCluster = new MarkerClusterer(map, markersArray, {maxZoom: 13});			
+}
+
+
+function matchCode(teamCode){
+    for (var i=0, iLen=uniInfo.length; i<iLen; i++) {
+
+    if (uniInfo[i].code == teamCode) return uniInfo[i];
+  }
+}
+
+
+function getUniInfo() {
+    $.ajax({
+      url:'http://tuc.innovation.telstra.com/api/uniInfo',
+      method: 'GET'
+    }).done(function(data) {
+      uniInfo = data
+      console.log(data);
+      return data;
+    }).fail(function() {
+      console.error(arguments);
+    });
+      
+      
+}
+
+  // Initialize the legend 
+function addLegend(map) {
+	count++;  
+	var legendWrapper = document.createElement('div'); 
+	legendWrapper.id = 'legendWrapper'; 
+	legendWrapper.index = 1; 
+	map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(legendWrapper); 
+	legendContent(legendWrapper, 'Legend'); 
+	} 
+
+
+  //Generate the content for the legend 
+  function legendContent(legendWrapper, column) { 
+	var legend = document.createElement('div'); 
+	legend.id = 'legend'; 
+
+	var title = document.createElement('p');
+	title.innerHTML = 'Teams';
+	legend.appendChild(title);
+ 
+    
+	var teamIndex = 0; 
+    console.log(teamArray)
+	teamArray.forEach( function (teamObject){
+        console.log(teamObject)
+        try {
+      
+          var legendItem = document.createElement('div');
+          legendItem.id = 'legendItem'; 
+          var name = document.createElement('span');
+          var icon = document.createElement('span'); 
+          icon.id = 'legendIcon';
+          teamUniInfo = matchCode(teamObject.team_code);
+          var teamUniInfo = matchCode(teamObject.team_code);
+          name.innerHTML = teamUniInfo.teamName;
+          icon.innerHTML = '<img src="' + customIconUrl[teamIndex] + '"  > ';
+          legend.appendChild(icon);
+          legend.appendChild(name);
+          legend.appendChild(legendItem);
+          //As there are currently only x markers available, below code is to ensure
+          //when there are more then x teams that the markers are recycled.
+              if (teamIndex < customIconUrl.length-1 ) {teamIndex++;} else {teamIndex = 0;} 
+        
+        } catch (err) {
+            if (err.name === 'TypeError')
+                {
+                    console.log('unexpected team code, offending record is:')
+                    console.log(teamObject)
+                    
+                }
+        }
+    }) 
+	
+	legendWrapper.appendChild(legend);
+}  
+
+ </script>
+
+</head> 
+  <body onload="initialize()"> <!-- Loading the function to load markers on a google map from script load_m2m_map.js-->
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Telstra University Challenge</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/">Getting Started</a></li>
+			  <!--<li><a href="map.html">M2M Map</a></li>-->
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <h1>Which teams are up and running?</h1>
+	  <p>
+      <br> 
+      On the map below, you can see the location of active teams on the Telstra network. The map is generated by collecting location information sent out by your team&#39;s Raspberry Pi&#174; or Virtual Machine. <br>
+      </p>
+
+      	<div id="map" style="width:800; height:600"></div>
+
+    </div> 
+
+
+  </body>
+</html>

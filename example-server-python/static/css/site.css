@@ -1,0 +1,57 @@
+      #legend { 
+        background-color: #FFF; 
+        margin: 10px; 
+        padding: 10px; 
+        width: 110px; 
+      }   
+
+    
+      #legend p { 
+        font-weight: bold; 
+        margin-top: 3px; 
+      }   
+ 
+      #legend div { 
+        clear: both; 
+      }   
+      
+      #legendWrapper div { 
+       background-color: #BBB;
+      }   
+      
+      .color { 
+        height: 12px; 
+        width: 12px; 
+        margin-right: 3px; 
+        float: left; 
+        display: block; 
+      }   
+    
+      html {
+        margin: 0;
+        height: 100%;
+        width: 100%;  
+      }   
+      body {
+        margin: 0;
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        height: 100%;
+        width: 100%;  
+      }   
+      #map {
+        margin: 0;
+        padding: 0;
+        height: 600px;
+        width: 800px; 
+      }  
+
+	#legendIcon img {
+  	  width: 11%;
+  	  height: 11%;
+	}
+
+
+  
+.gmnoprint img {
+    max-width: none; 
+}

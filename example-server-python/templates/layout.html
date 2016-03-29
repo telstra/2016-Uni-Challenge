@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% block head %}
+	<meta charset="utf-8">
+	    <title>Telstra M2M Challenge</title>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta name="description" content="">
+	    <meta name="author" content="">
+
+	    <!-- Le styles -->
+	    <link href="static/css/bootstrap.css" rel="stylesheet">
+	    <link href="static/css/site.css" rel="stylesheet">
+	    <link href="static/css/bootstrap-responsive.css" rel="stylesheet">
+	    <script type="text/javascript" src="static/js/jquery.js"></script>
+		<script type='text/javascript' src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKk9SBIqz3HqHslD_VwWPagJVXW2PGpCE&sensor=true"> </script>
+		<script type="text/javascript" src="static/js/markerclusterer.js"></script>	
+		<script type="text/javascript" src="static/js/es5-shim.min.js"></script>
+		<script type="text/javascript" src="static/js/load_m2m_map_jsonp.js"></script> <!-- Javascript to load teams on m2m map -->
+	    <script src="static/js/bootstrap-transition.js"></script>
+	    <script src="static/js/bootstrap-alert.js"></script>
+	    <script src="static/js/bootstrap-modal.js"></script>
+	    <script src="static/js/bootstrap-dropdown.js"></script>
+	    <script src="static/js/bootstrap-scrollspy.js"></script>
+	    <script src="static/js/bootstrap-tab.js"></script>
+	    <script src="static/js/bootstrap-tooltip.js"></script>
+	    <script src="static/js/bootstrap-popover.js"></script>
+	    <script src="static/js/bootstrap-button.js"></script>
+	    <script src="static/js/bootstrap-collapse.js"></script>
+	    <script src="static/js/bootstrap-carousel.js"></script>
+	    <script src="static/js/bootstrap-typeahead.js"></script>
+	
+
+	    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	    <!--[if lt IE 9]> <script src="static/js/html5shiv.js"></script> <![endif]-->
+
+	    <!-- Fav and touch icons -->
+	    <link rel="shortcut icon" href="static/ico/favicon.ico">
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="{{ url_for('show_records') }}">M2M@telstra</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+</body>

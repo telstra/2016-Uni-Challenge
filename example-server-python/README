@@ -1,0 +1,19 @@
+Example M2M server
+=========================
+
+Requirements:
+The server code makes use of the Flask web framework 
+as well as the google maps extension for Flask.
+
+to ensure you have the required packages,
+please install them with pip (the python package manager: http://www.pip-installer.org/en/latest/installing.html):
+	`pip install Flask`
+	`pip install flask-googlemaps`
+
+Once the above packages are installed you can run the server with:
+	`python m2mServer.py`
+
+The debug flag for Flask is currently set to True (line 27 of m2mServer.py),
+this should help you to debug any issues you might encounter (it also
+automatically reload the server if you make any changes to m2mServer.py),
+but feel free to set it to false for less verbose output.
