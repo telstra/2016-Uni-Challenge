@@ -16,7 +16,7 @@
 from sqlite3 import dbapi2 as sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash, jsonify, make_response, Response, current_app
-import json, datetime
+import json, datetime, os
 from functools import wraps
 #from OpenSSL import SSL
 
@@ -25,7 +25,7 @@ app = Flask(__name__)
 
 # Load default config or override config from an environment variable, if it exists
 app.config.update(dict(
-    DATABASE='M2M.db',
+    DATABASE=os.path.join(os.path.dirname(os.path.realpath(__file__)), "M2M.db"),
     DEBUG=False,
     SECRET_KEY='someRandomKey',
     USERNAME='admin',
